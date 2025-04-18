@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html en="us">
 
 <head>
   <meta charset="utf-8">
@@ -10,8 +10,50 @@
 </head>
 
 <body>
-  <h1>HTML Rocks!</h1>
-  <img src="img/compile.jpeg">
+  <nav>
+    <!-- TODO logout function -->
+    <a href="#">Logout</a> 
+  </nav>
+
+  <h1>Dashboard</h1>
+  <hr>
+
+  <button id="showform">Add Note</button>
+  <!-- TODO filter function -->
+
+  <dialog id="popup">
+    <h2>Create Note</h2>
+    <form id="add-note">
+      <label for="title">Title:</label>
+      <input type="text" name="title" id="title" required>
+      <input type="submit" value="Create">
+    </form>
+    <button id="hideform">Cancel</button>
+  </dialog>
+
+  <section id="notes" class="notes">
+    <!-- Placeholder Entries, will be loaded with AJAX -->
+    <article class="entry">
+      <h2>Placeholder 1</h2>
+      <p>...</p>
+    </article>
+
+    <article class="entry">
+      <h2>Placeholder 2</h2>
+      <p>...</p>
+    </article>
+
+    <article class="entry">
+      <h2>Placeholder 3</h2>
+      <p>...</p>
+    </article>
+
+    <article class="entry">
+      <h2>Placeholder 4</h2>
+      <p>...</p>
+    </article>
+  </section>
+
   <script type="module" src="js/main.js"></script>
 </body>
 
