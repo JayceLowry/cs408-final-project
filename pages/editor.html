@@ -16,7 +16,7 @@
   </nav>
   
   <article class="main">
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
         <section class="entry">
           <h2>Placeholder Note 1</h2>
         </section>
@@ -31,14 +31,17 @@
         </section>
       </aside>
 
-    <section class="canvas">
-      <h1>Placeholder Note Title</h1>
+    <section class="canvas" id="canvas">
+      <h1 id="note-title">Placeholder Note Title</h1>
+      <form id="save">
+        <input type="submit" value="Save">
+      </form>
       <hr>
-      <textarea class="editor"></textarea>
+      <textarea class="editor" id="editor"></textarea>
     </section>
   </article>
 
-  <script type="module" src="js/editor.js"></script>
+  <script type="module" src="/js/editor.js"></script>
 </body>
 
 </html>
