@@ -59,18 +59,6 @@ document.getElementById("add-note").addEventListener("submit", function(event){
     document.getElementById("notes").appendChild(createEntry(dataOut));
 });
 
-/* Handler for retrieving data from the server */
-document.getElementById("load-items").addEventListener("submit", function(event) {
-    event.preventDefault();
-
-    let xhr = new XMLHttpRequest();
-    xhr.addEventListener("load", function () {
-        loadNotes(JSON.parse(xhr.response));
-    });
-    xhr.open("GET", "https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items");
-    xhr.send();
-});
-
 /**
  * Retrieves notes from the server and updates the DOM
  */
@@ -103,7 +91,7 @@ function updateDOMNotes(data) {
  * @returns {HTMLElement} the entry element.
  */
 function createEntry(entryData) {
-    const container = document.createElement("article");
+    const container = document.createElement("section");
     container.setAttribute("class", "entry");
     
     const title = document.createElement("h2");
