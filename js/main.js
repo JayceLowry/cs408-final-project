@@ -105,7 +105,9 @@ function createEntry(entryData) {
     const editButton = document.createElement("button");
     editButton.textContent = "Edit";
     editButton.id = "edit-note";
-    // TODO add listener
+    editButton.addEventListener("click", function() {
+        window.location.href = `pages/editor.html?id=${entryData.id}`
+    });
 
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Delete";

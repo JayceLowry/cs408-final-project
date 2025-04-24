@@ -9,7 +9,14 @@ function loaded() {
     console.log(hello);
 
     loadNotes();
+    const editingId = new URLSearchParams(window.location.search).get("id");
+    retrieveNote(editingId, updateCanvas);    
 }
+
+window.addEventListener("popstate", function() {
+    const editingId = new URLSearchParams(window.location.search).get("id");
+    retrieveNote(editingId, updateCanvas);
+});
 
 /**
  * This function returns the string 'hello'
@@ -63,8 +70,8 @@ function createEntry(entryData) {
     editButton.id = "edit-note";
 
     editButton.addEventListener("click", function() {
-    //   updateCanvas(entryData);
         retrieveNote(entryData.id, updateCanvas);
+        window.history.pushState({}, "", `editor.html?id=${entryData.id}`);
     });
 
     container.appendChild(title);
