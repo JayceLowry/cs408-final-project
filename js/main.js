@@ -98,7 +98,8 @@ function createEntry(entryData) {
     title.textContent = entryData.title;
     
     const content = document.createElement("p");
-    content.textContent = entryData.content; // TODO truncate
+    const displayLength = 10;
+    content.textContent = (entryData.content.length > displayLength) ? entryData.content.slice(0, displayLength) + "..." : entryData.content;
 
     // TODO add tags
 
