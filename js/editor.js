@@ -160,6 +160,8 @@ document.getElementById("add-tag").addEventListener("submit", function(event){
     event.preventDefault();
 
     const text = document.getElementById("taginput");
+    const editor = document.getElementById("editor");
+    const editorText = editor.value;
     const noteId = document.getElementById("note-title").getAttribute("data-id");
     if (noteId == null) {
         return;
@@ -177,5 +179,6 @@ document.getElementById("add-tag").addEventListener("submit", function(event){
         xhr.send(JSON.stringify(data));
 
         updateCanvas(data);
+        editor.value = editorText;
     });
 });
