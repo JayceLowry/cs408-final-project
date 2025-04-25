@@ -31,7 +31,6 @@ main {
   min-height: 100%;
   width: 100%;
   padding: 10px;
-  /* border: 1px solid black; */
   flex-grow: 1;
 }
 
@@ -109,7 +108,7 @@ hr {
 
 h1 {
   font-size: 32pt;
-  margin: 0;
+  margin: 0px 0px 15px 0px;
   padding: 0;
 }
 
@@ -118,7 +117,7 @@ h1 {
   display: flex;
   padding: 0;
   margin: 0;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 4px;
 }
 
@@ -127,6 +126,7 @@ h1 {
   padding: 4px;
   background-color: lightgoldenrodyellow;
   border-radius: 8px;
+  display: flex;
 }
 
 .tags button {
@@ -148,6 +148,25 @@ h1 {
   justify-content: space-between;
 }
 
+.meta-container * {
+  align-content: center;
+}
+
 .tag-container {
   display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+#add-tag input, #add-tag button {
+  min-height: 100%;
+}
+
+#add-tag {
+  display: flex;
+  gap: 0px;
+}
+
+.input-container {
+  display: none;
 }

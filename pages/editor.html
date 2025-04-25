@@ -34,9 +34,13 @@
             <ul class="tags" id="tags">
               <!-- Tags loaded with AJAX -->
             </ul>
-            <form id="add-tag">
-              <input type="text" name="taginput" id="taginput">
-              <!-- <input type="submit" value="Add tag"> -->
+            <form id="add-tag" autocomplete="off">
+              <button type="button" id="show-input" title="Add a tag">+</button>
+              <span class="input-container" id="input-container">
+                <input type="text" name="taginput" id="taginput" placeholder="Type your tag here..." required>
+                <input type="submit" value="✓" title="Confirm">
+                <button type="button" id="hide-input" title="Cancel">x</button>
+              </span>
             </form>
           </div>
           <form id="save">
