@@ -117,6 +117,7 @@ function updateCanvas(data) {
         const deleteTag = document.createElement("button");
         deleteTag.textContent = "+";
         deleteTag.addEventListener("click", function() {
+            data.tags = new Set(data.tags);
             data.tags.delete(tag);
             data.tags = [...data.tags];
 
