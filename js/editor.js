@@ -32,18 +32,18 @@ export function sayHello() {
 function loadNotes() {
     let xhr = new XMLHttpRequest();
     xhr.addEventListener("load", function () {
-        updateDOMNotes(JSON.parse(xhr.response));
+        updateSidebar(JSON.parse(xhr.response));
     });
     xhr.open("GET", "https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items");
     xhr.send();
 }
 
 /**
- * Updates the DOM with notes
+ * Updates the sidebar with notes
  * 
  * @param {JSON} data the JSON data for one or more notes.
  */
-function updateDOMNotes(data) {
+function updateSidebar(data) {
     const sidebar = document.getElementById("sidebar");
     sidebar.innerHTML = "";
     data.forEach(element => {
@@ -107,6 +107,30 @@ function updateCanvas(data) {
     const textArea = document.getElementById("editor");
     header.innerHTML = data.title;
     textArea.value = data.content;
+
+    data.tags = new Set(data.tags);
+    const tags = document.getElementById("tags");
+    tags.textContent = "";
+    data.tags.forEach(tag => {
+        const noteTag = document.createElement("li");
+        noteTag.textContent = tag;
+        const deleteTag = document.createElement("button");
+        deleteTag.textContent = "+";
+        deleteTag.addEventListener("click", function() {
+            data.tags.delete(tag);
+            data.tags = [...data.tags];
+
+            let xhr = new XMLHttpRequest();
+            xhr.open("PUT", "https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(JSON.stringify(data));
+
+            noteTag.remove();
+        });
+
+        noteTag.appendChild(deleteTag);
+        tags.prepend(noteTag);
+    });
 }
 
 /* Handles saving a note's text content */
@@ -121,6 +145,30 @@ document.getElementById("save").addEventListener("submit", function(event){
 
     retrieveNote(noteId, function(data) {
         data.content = newContent;
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("PUT", "https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(JSON.stringify(data));
+
+        updateCanvas(data);
+    });
+});
+
+document.getElementById("add-tag").addEventListener("submit", function(event){
+    event.preventDefault();
+
+    const text = document.getElementById("taginput");
+    const noteId = document.getElementById("note-title").getAttribute("data-id");
+    if (noteId == null) {
+        return;
+    }
+
+    retrieveNote(noteId, function(data) {
+        
+        data.tags = new Set(data.tags);
+        data.tags.add(text.value);
+        data.tags = [...data.tags];
 
         let xhr = new XMLHttpRequest();
         xhr.open("PUT", "https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items");

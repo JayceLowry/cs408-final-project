@@ -29,10 +29,12 @@ body {
   display: flex;
   flex-basis: 10%;
   flex-direction: column;
+  overflow: hidden;
+  max-height: 100%;
 }
 
 .entry * {
-  flex-basis: 30%;
+  flex-basis: 10%;
 }
 
 .entry > h2 {
@@ -42,4 +44,24 @@ body {
 
 #popup {
   display: none;
+}
+
+.tags {
+  list-style: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+  min-height: 30px;
+  overflow-y: hidden;
+  gap: 4px;
+  scrollbar-width: none;
+}
+
+.tags li {
+  border: 1px solid black;
+  padding: 4px;
+  background-color: lightgoldenrodyellow;
+  border-radius: 8px;
 }

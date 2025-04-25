@@ -40,13 +40,12 @@ document.getElementById("add-note").addEventListener("submit", function(event){
     const noteTitle = document.getElementById("title").value;
     const timeStamp = Date.now();
     const noteId = `note-${timeStamp}-${Math.floor(Math.random() * 1000)}`;
-    const contentTag = ""; // TODO get user-specified tag
 
     const dataOut = {
         "id": `${noteId}`,
         "title": `${noteTitle}`,
-        "content": "...",
-        "tag": `${contentTag}`,
+        "content": "",
+        "tags": [],
         "timestamp": `${timeStamp}`
     }
 
@@ -101,7 +100,13 @@ function createEntry(entryData) {
     const displayLength = 10;
     content.textContent = (entryData.content.length > displayLength) ? entryData.content.slice(0, displayLength) + "..." : entryData.content;
 
-    // TODO add tags
+    const tags = document.createElement("ul");
+    tags.setAttribute("class", "tags")
+    entryData.tags.forEach(tag => {
+        const tagItem = document.createElement("li");
+        tagItem.textContent = tag;
+        tags.appendChild(tagItem);
+    });
 
     const editButton = document.createElement("button");
     editButton.textContent = "Edit";
@@ -123,6 +128,7 @@ function createEntry(entryData) {
 
     container.appendChild(title);
     container.appendChild(content);
+    container.appendChild(tags);
     container.appendChild(editButton);
     container.appendChild(deleteButton);
     
