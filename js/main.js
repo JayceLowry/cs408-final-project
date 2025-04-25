@@ -125,12 +125,14 @@ function createEntry(entryData) {
         xhr.send();
         container.remove();
     });
+    const buttonContainer = document.createElement("div");
+    buttonContainer.appendChild(editButton);
+    buttonContainer.appendChild(deleteButton);
 
     container.appendChild(title);
     container.appendChild(content);
     container.appendChild(tags);
-    container.appendChild(editButton);
-    container.appendChild(deleteButton);
+    container.appendChild(buttonContainer);
     
     return container;
 }
