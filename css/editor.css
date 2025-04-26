@@ -66,16 +66,25 @@ nav li > a {
 }
 
 .sidebar {
-  border: 1px solid black;
+  border-radius: 10px;
   height: 100%;
+  background-color: #e1e1e1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
-.entry {
-  background-color: lightgray;
+.entry * {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 2px;
+  min-height: 25px;
+  text-align: left;
 }
 
-.entry h2 {
-  font-size: 16px;
+.edit-note.active {
+  background-color: aliceblue;
 }
 
 .canvas {

@@ -97,7 +97,7 @@ function createEntry(entryData) {
     title.textContent = entryData.title;
     
     const content = document.createElement("p");
-    const displayLength = 10;
+    const displayLength = 50;
     content.textContent = (entryData.content.length > displayLength) ? entryData.content.slice(0, displayLength) + "..." : entryData.content;
 
     const tags = document.createElement("ul");

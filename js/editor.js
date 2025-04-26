@@ -50,6 +50,9 @@ function updateSidebar(data) {
         const entry = createEntry(element);
         sidebar.appendChild(entry);
     });
+    const editingId = new URLSearchParams(window.location.search).get("id");
+    const sidebarEntry = document.getElementById("sidebar").querySelector(`[data-id="${editingId}"]`);
+    sidebarEntry.querySelector("button").classList.add("active");
 }
 
 /**
@@ -62,19 +65,18 @@ function createEntry(entryData) {
     container.setAttribute("class", "entry");
     container.setAttribute("data-id", entryData.id);
     
-    const title = document.createElement("h2");
-    title.textContent = entryData.title;
-    
     const editButton = document.createElement("button");
-    editButton.textContent = "Edit";
+    editButton.textContent = entryData.title;
     editButton.id = "edit-note";
+    editButton.classList.add("edit-note");
 
     editButton.addEventListener("click", function() {
         retrieveNote(entryData.id, updateCanvas);
         window.history.pushState({}, "", `editor.html?id=${entryData.id}`);
+        document.querySelector(".edit-note.active")?.classList.remove("active");
+        editButton.classList.add("active");
     });
 
-    container.appendChild(title);
     container.appendChild(editButton);
     
     return container;

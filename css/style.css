@@ -46,6 +46,9 @@ body {
 
 .entry * {
   flex-basis: 10%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .entry > h2 {
@@ -84,6 +87,7 @@ body {
   padding: 4px;
   background-color: lightgoldenrodyellow;
   border-radius: 8px;
+  white-space: nowrap;
 }
 
 nav {
