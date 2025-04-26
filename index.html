@@ -25,8 +25,15 @@
       <h1>Dashboard</h1>
       <hr>
     
-      <button id="showform">Add Note</button>
-      <!-- TODO filter function -->
+      <section id="note-controls" class="note-controls">
+        <form id="filter" class="filter" autocomplete="off">
+          <input type="text" id="filterBox" placeholder="Filter by tag..." required>
+          <input type="submit" value="Go">
+          <button type="button" id="clear-filter">Clear Filter</button>
+        </form>
+  
+        <button id="showform">Add Note</button>
+      </section>
     
       <dialog id="popup">
         <h2>Create Note</h2>

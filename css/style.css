@@ -65,7 +65,7 @@ body {
   flex: 1;
 }
 
-#popup {
+#popup, #clear-filter {
   display: none;
 }
 
@@ -119,4 +119,9 @@ nav li {
 nav li > a {
   color: black;
   text-decoration: none;
+}
+
+.note-controls {
+  display: flex;
+  justify-content: space-between;
 }

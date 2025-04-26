@@ -34,7 +34,7 @@ hideFormButton.addEventListener("click", function() {
 });
 
 /* Handles adding a new note */
-document.getElementById("add-note").addEventListener("submit", function(event){
+document.getElementById("add-note").addEventListener("submit", function(event) {
     event.preventDefault();
 
     const noteTitle = document.getElementById("title").value;
@@ -136,3 +136,27 @@ function createEntry(entryData) {
     
     return container;
 }
+
+document.getElementById("filter").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const textBox = document.getElementById("filterBox");
+    const filterTerm = textBox.value;
+    textBox.value = "";
+
+    document.getElementById("showform").style.display = "none";
+    document.getElementById("clear-filter").style.display = "inline-block";
+
+    let xhr = new XMLHttpRequest();
+    xhr.addEventListener("load", function () {
+        updateDOMNotes(JSON.parse(xhr.response));
+    });
+    xhr.open("GET", `https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items/search/${filterTerm}`);
+    xhr.send();
+});
+
+document.getElementById("clear-filter").addEventListener("click", function() {
+    document.getElementById("showform").style.display = "inline-block";
+    document.getElementById("clear-filter").style.display = "none";
+    loadNotes();
+});
