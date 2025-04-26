@@ -26,11 +26,19 @@ const addNotePopup = document.getElementById("popup");
 /* Show the add note popup */
 showFormButton.addEventListener("click", function() {
     addNotePopup.style.display = "block";
+    document.getElementById("title").focus();
 });
 
 /* Hide the add note popup */
 hideFormButton.addEventListener("click", function() {
     addNotePopup.style.display = "none";
+});
+
+/* Hide the popup if the user clicks away */
+document.addEventListener("click", function(event) {
+    if (!addNotePopup.contains(event.target) && event.target != showFormButton) {
+        addNotePopup.style.display = "none";
+    }
 });
 
 /* Handles adding a new note */
@@ -40,6 +48,7 @@ document.getElementById("add-note").addEventListener("submit", function(event) {
     const noteTitle = document.getElementById("title").value;
     const timeStamp = Date.now();
     const noteId = `note-${timeStamp}-${Math.floor(Math.random() * 1000)}`;
+    document.getElementById("title").value = "";
 
     const dataOut = {
         "id": `${noteId}`,
