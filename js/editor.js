@@ -3,26 +3,26 @@ window.onload = loaded;
 /**
  * Simple Function that will be run when the browser is finished loading.
  */
-function loaded() {
+async function loaded() {
     // Assign to a variable so we can set a breakpoint in the debugger!
     const hello = sayHello();
     console.log(hello);
 
     const userId = sessionStorage.getItem("userId");
+    const editing = sessionStorage.getItem("editing");
 
     if (!userId) {
         window.location.href = "/pages/login.html";
     }
 
-    loadNotes();
-    const editingId = new URLSearchParams(window.location.search).get("id");
-    retrieveNote(editingId, updateCanvas);    
-}
+    if (!editing) {
+        window.location.href = "/index.html";
+    }
 
-window.addEventListener("popstate", function() {
-    const editingId = new URLSearchParams(window.location.search).get("id");
-    retrieveNote(editingId, updateCanvas);
-});
+    const serverNoteData = await loadNotes();
+    updateSidebar(serverNoteData);
+    updateCanvas();
+}
 
 /**
  * This function returns the string 'hello'
@@ -32,32 +32,172 @@ export function sayHello() {
     return 'loaded editor';
 }
 
+const saveNoteButton = document.getElementById("save");
+const showTagCreateInput = document.getElementById("show-input");
+const inputContainer = document.getElementById("input-container");
+const hideTagCreateInput = document.getElementById("hide-input");
+const createTagButton = document.getElementById("add-tag");
+
+/* Handler for saving a note's text content */
+saveNoteButton.addEventListener("submit", function(event){
+    event.preventDefault();
+
+    const editing = JSON.parse(sessionStorage.getItem("editing"));
+    const newContent = document.getElementById("editor").value;
+
+    editing.content = newContent;
+    saveNote(editing);
+    sessionStorage.setItem("editing", JSON.stringify(editing));
+});
+
+/* Handler for adding a new tag */
+createTagButton.addEventListener("submit", async function(event){
+    event.preventDefault();
+
+    const textInput = document.getElementById("taginput");
+    const text = textInput.value;
+    const editor = document.getElementById("editor");
+    const editorText = editor.value;
+
+    const editing = JSON.parse(sessionStorage.getItem("editing"));
+    editing.tags = new Set(editing.tags);
+    editing.tags.add(text);
+    editing.tags = [...editing.tags];
+    sessionStorage.setItem("editing", JSON.stringify(editing));
+    updateCanvas();
+    editor.value = editorText;
+    saveNote(editing);
+
+    showInput(false);
+});
+
+/* Shows the tag creation form */
+showTagCreateInput.addEventListener("click", function() {
+    showInput(true);
+});
+
+/* Hides the tag creation form */
+hideTagCreateInput.addEventListener("click", function() {
+    showInput(false);
+});
+
 /**
- * Retrieves notes from the server and updates the DOM
+ * Shows or hides the tag creation input form,
+ * depending on a boolean value.
+ * 
+ * @param {boolean} isShowing true to show the form, false
+ * to hide it.
  */
-function loadNotes() {
+function showInput(isShowing) {
+    const textArea = document.getElementById("taginput");
+    if (isShowing) {
+        inputContainer.style.display = "inline-block";
+        showTagCreateInput.style.display = "none";
+        textArea.focus();
+    } else {
+        inputContainer.style.display = "none";
+        showTagCreateInput.style.display = "inline-block";
+        textArea.value = "";
+    }
+}
+
+/* Logs the user out */
+document.getElementById("logout").addEventListener("click", function() {
+    sessionStorage.removeItem("userId");
+    sessionStorage.removeItem("editing");
+    window.location.href = "/pages/login.html";
+});
+
+/**
+ * Retrieves note data from the server.
+ * 
+ * @returns {JSON} note data for all notes.
+ */
+async function loadNotes() {
     const userId = sessionStorage.getItem("userId");
-    let xhr = new XMLHttpRequest();
-    xhr.addEventListener("load", function () {
-        updateSidebar(JSON.parse(xhr.response));
-    });
-    xhr.open("GET", `https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items?userId=${userId}`);
-    xhr.send();
+
+    try {
+        const response = await fetch(`https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items?userId=${userId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error("Error retrieving notes from the server", data.message);
+        }
+        return data;
+    } catch (error) {
+        console.log(error);
+        alert("Failed to retrieve notes");
+    }
 }
 
 /**
- * Updates the sidebar with notes
+ * Retrieves a specific note.
  * 
- * @param {JSON} data the JSON data for one or more notes.
+ * @param {String} id the id for the note to retrieve.
+ */
+async function retrieveNote(id) {
+    const userId = sessionStorage.getItem("userId");
+    try {
+        const response = await fetch(`https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items/${id}?userId=${userId}`, {
+            Method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error("Error retrieving this note", data.message);
+        }
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+/**
+ * Saves the contents of a given note to the server.
+ */
+function saveNote(noteData) {
+    try {
+        fetch("https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(noteData)
+        });
+    } catch (error) {
+        console.error(error);
+        alert("Something went wrong");
+    }
+}
+
+/**
+ * Updates the sidebar with notes.
+ * 
+ * @param {JSON} data the data for one or more notes.
  */
 function updateSidebar(data) {
     const sidebar = document.getElementById("sidebar");
+    /* Clear existing entries */
     sidebar.innerHTML = "";
+
+    /* Populate sidebar with new entries */
     data.forEach(element => {
         const entry = createEntry(element);
         sidebar.appendChild(entry);
     });
-    const editingId = new URLSearchParams(window.location.search).get("id");
+
+    /* Update the selected note */
+    const editingId = JSON.parse(sessionStorage.getItem("editing")).id;
     const sidebarEntry = document.getElementById("sidebar").querySelector(`[data-id="${editingId}"]`);
     sidebarEntry.querySelector("button").classList.add("active");
 }
@@ -68,20 +208,26 @@ function updateSidebar(data) {
  * @returns {HTMLElement} the entry element.
  */
 function createEntry(entryData) {
+    /* Create the container for the note */
     const container = document.createElement("section");
     container.setAttribute("class", "entry");
     container.setAttribute("data-id", entryData.id);
     
+    /* Create the button element for editing */
     const editButton = document.createElement("button");
     editButton.textContent = entryData.title;
     editButton.id = "edit-note";
     editButton.classList.add("edit-note");
 
-    editButton.addEventListener("click", function() {
-        retrieveNote(entryData.id, updateCanvas);
-        window.history.pushState({}, "", `editor.html?id=${entryData.id}`);
+    editButton.addEventListener("click", async function() {
+        /* Get updated note data from the server */
+        const thisNote = await retrieveNote(entryData.id);
+
+        /* Set this note as active */
+        sessionStorage.setItem("editing", JSON.stringify(thisNote));
         document.querySelector(".edit-note.active")?.classList.remove("active");
         editButton.classList.add("active");
+        updateCanvas();
     });
 
     container.appendChild(editButton);
@@ -90,137 +236,43 @@ function createEntry(entryData) {
 }
 
 /**
- * Retrieves a specific note.
- * 
- * @param {String} id the id for the note to retrieve.
- * @param {Function} callback an action to be performed using 
- * retrieved data as input.
+ * Updates the text editor canvas content with the note that
+ * is currently being edited.
  */
-function retrieveNote(id, callback) {
-    const userId = sessionStorage.getItem("userId");
-    let xhr = new XMLHttpRequest();
-    xhr.addEventListener("load", function () {
-        callback(JSON.parse(xhr.response));
-    });
-    xhr.open("GET", `https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items/${id}?userId=${userId}`);
-    xhr.send();
-}
+function updateCanvas() {
+    /* Get the active note */
+    const editing = JSON.parse(sessionStorage.getItem("editing"));
 
-/**
- * Updates the title and text editor content.
- * 
- * @param {JSON} data the JSON data for a single note.
- */
-function updateCanvas(data) {
+    /* Update title and text */
     const header = document.getElementById("note-title");
-    header.setAttribute("data-id", data.id)
     const textArea = document.getElementById("editor");
-    header.innerHTML = data.title;
-    textArea.value = data.content;
+    header.innerHTML = editing.title;
+    textArea.value = editing.content;
 
-    data.tags = new Set(data.tags);
+    /* Load the note's tags */
+    editing.tags = new Set(editing.tags);
     const tags = document.getElementById("tags");
+
     tags.textContent = "";
-    data.tags.forEach(tag => {
+    editing.tags.forEach(tag => {
         const noteTag = document.createElement("li");
         noteTag.textContent = tag;
+
         const deleteTag = document.createElement("button");
         deleteTag.textContent = "+";
+
         deleteTag.addEventListener("click", function() {
-            data.tags = new Set(data.tags);
-            data.tags.delete(tag);
-            data.tags = [...data.tags];
+            editing.tags = new Set(editing.tags);
+            editing.tags.delete(tag);
+            editing.tags = [...editing.tags];
 
-            let xhr = new XMLHttpRequest();
-            xhr.open("PUT", "https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items");
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.send(JSON.stringify(data));
-
+            saveNote(editing);
+            sessionStorage.setItem("editing", JSON.stringify(editing));
             noteTag.remove();
         });
 
         noteTag.appendChild(deleteTag);
         tags.appendChild(noteTag);
     });
+    editing.tags = [...editing.tags];
 }
-
-/* Handles saving a note's text content */
-document.getElementById("save").addEventListener("submit", function(event){
-    event.preventDefault();
-
-    const noteId = document.getElementById("note-title").getAttribute("data-id");
-    if (noteId == null) {
-        return;
-    }
-    const newContent = document.getElementById("editor").value;
-
-    retrieveNote(noteId, function(data) {
-        data.content = newContent;
-
-        let xhr = new XMLHttpRequest();
-        xhr.open("PUT", "https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items");
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.send(JSON.stringify(data));
-
-        updateCanvas(data);
-    });
-});
-
-const showInputButton = document.getElementById("show-input");
-const inputContainer = document.getElementById("input-container");
-const hideInputButton = document.getElementById("hide-input");
-
-document.getElementById("add-tag").addEventListener("submit", function(event){
-    event.preventDefault();
-
-    const textInput = document.getElementById("taginput");
-    const text = textInput.value;
-    const editor = document.getElementById("editor");
-    const editorText = editor.value;
-    const noteId = document.getElementById("note-title").getAttribute("data-id");
-    if (noteId == null) {
-        return;
-    }
-
-    retrieveNote(noteId, function(data) {
-        
-        data.tags = new Set(data.tags);
-        data.tags.add(text);
-        data.tags = [...data.tags];
-
-        let xhr = new XMLHttpRequest();
-        xhr.open("PUT", "https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items");
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.send(JSON.stringify(data));
-
-        updateCanvas(data);
-        editor.value = editorText;
-    });
-    showInput(false);
-});
-
-showInputButton.addEventListener("click", function() {
-    showInput(true);
-});
-
-hideInputButton.addEventListener("click", function() {
-    showInput(false);
-});
-
-function showInput(isShowing) {
-    const textArea = document.getElementById("taginput");
-    if (isShowing) {
-        inputContainer.style.display = "inline-block";
-        showInputButton.style.display = "none";
-        textArea.focus();
-    } else {
-        inputContainer.style.display = "none";
-        showInputButton.style.display = "inline-block";
-        textArea.value = "";
-    }
-}
-
-document.getElementById("logout").addEventListener("click", function() {
-    sessionStorage.removeItem("userId");
-    window.location.href = "/pages/login.html";
-});
