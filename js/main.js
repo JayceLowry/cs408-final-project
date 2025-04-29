@@ -7,6 +7,11 @@ function loaded() {
     // Assign to a variable so we can set a breakpoint in the debugger!
     const hello = sayHello();
     console.log(hello);
+    const userId = sessionStorage.getItem("userId");
+
+    if (!userId) {
+        window.location.href = "/pages/login.html";
+    }
 
     loadNotes();
 }
@@ -52,6 +57,7 @@ document.getElementById("add-note").addEventListener("submit", function(event) {
 
     const dataOut = {
         "id": `${noteId}`,
+        "userId": sessionStorage.getItem("userId"),
         "title": `${noteTitle}`,
         "content": "",
         "tags": [],
@@ -71,11 +77,12 @@ document.getElementById("add-note").addEventListener("submit", function(event) {
  * Retrieves notes from the server and updates the DOM
  */
 function loadNotes() {
+    const userId = sessionStorage.getItem("userId");
     let xhr = new XMLHttpRequest();
     xhr.addEventListener("load", function () {
         updateDOMNotes(JSON.parse(xhr.response));
     });
-    xhr.open("GET", "https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items");
+    xhr.open("GET", `https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items?userId=${userId}`);
     xhr.send();
 }
 
@@ -99,6 +106,7 @@ function updateDOMNotes(data) {
  * @returns {HTMLElement} the entry element.
  */
 function createEntry(entryData) {
+    const userId = sessionStorage.getItem("userId");
     const container = document.createElement("section");
     container.setAttribute("class", "entry");
     
@@ -129,7 +137,7 @@ function createEntry(entryData) {
     deleteButton.id = "delete-note";
     deleteButton.addEventListener("click", function() {
         let xhr = new XMLHttpRequest();
-        xhr.open("DELETE", `https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items/${entryData.id}`);
+        xhr.open("DELETE", `https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items/${entryData.id}?userId=${userId}`);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send();
         container.remove();
@@ -149,6 +157,7 @@ function createEntry(entryData) {
 document.getElementById("filter").addEventListener("submit", function(event) {
     event.preventDefault();
 
+    const userId = sessionStorage.getItem("userId");
     const textBox = document.getElementById("filterBox");
     const filterTerm = textBox.value;
     textBox.value = "";
@@ -160,7 +169,7 @@ document.getElementById("filter").addEventListener("submit", function(event) {
     xhr.addEventListener("load", function () {
         updateDOMNotes(JSON.parse(xhr.response));
     });
-    xhr.open("GET", `https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items/search/${filterTerm}`);
+    xhr.open("GET", `https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items/search/${filterTerm}?userId=${userId}`);
     xhr.send();
 });
 
@@ -168,4 +177,9 @@ document.getElementById("clear-filter").addEventListener("click", function() {
     document.getElementById("showform").style.display = "inline-block";
     document.getElementById("clear-filter").style.display = "none";
     loadNotes();
+});
+
+document.getElementById("logout").addEventListener("click", function() {
+    sessionStorage.removeItem("userId");
+    window.location.href = "/pages/login.html";
 });

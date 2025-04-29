@@ -8,6 +8,12 @@ function loaded() {
     const hello = sayHello();
     console.log(hello);
 
+    const userId = sessionStorage.getItem("userId");
+
+    if (!userId) {
+        window.location.href = "/pages/login.html";
+    }
+
     loadNotes();
     const editingId = new URLSearchParams(window.location.search).get("id");
     retrieveNote(editingId, updateCanvas);    
@@ -30,11 +36,12 @@ export function sayHello() {
  * Retrieves notes from the server and updates the DOM
  */
 function loadNotes() {
+    const userId = sessionStorage.getItem("userId");
     let xhr = new XMLHttpRequest();
     xhr.addEventListener("load", function () {
         updateSidebar(JSON.parse(xhr.response));
     });
-    xhr.open("GET", "https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items");
+    xhr.open("GET", `https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items?userId=${userId}`);
     xhr.send();
 }
 
@@ -90,11 +97,12 @@ function createEntry(entryData) {
  * retrieved data as input.
  */
 function retrieveNote(id, callback) {
+    const userId = sessionStorage.getItem("userId");
     let xhr = new XMLHttpRequest();
     xhr.addEventListener("load", function () {
         callback(JSON.parse(xhr.response));
     });
-    xhr.open("GET", `https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items/${id}`);
+    xhr.open("GET", `https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items/${id}?userId=${userId}`);
     xhr.send();
 }
 
@@ -211,3 +219,8 @@ function showInput(isShowing) {
         textArea.value = "";
     }
 }
+
+document.getElementById("logout").addEventListener("click", function() {
+    sessionStorage.removeItem("userId");
+    window.location.href = "/pages/login.html";
+});
