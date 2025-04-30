@@ -16,6 +16,10 @@ async function loaded() {
     greet.textContent = sessionStorage.getItem("username");
 
     const serverData = await loadNotes();
+    const numNotes = Object.keys(serverData).length;
+    if (numNotes < 1) {
+        displayEmptyNoteSign(true);
+    }
     updateDashboard(serverData);
 }
 
@@ -32,6 +36,32 @@ const hideFormButton = document.getElementById("hideform");
 const addNotePopup = document.getElementById("popup");
 const addFilterButton = document.getElementById("filter");
 const clearFilterButton = document.getElementById("clear-filter");
+const emptyNotes = document.getElementById("no-notes");
+const noResults = document.getElementById("no-results");
+
+/**
+ * Displays the empty note message based
+ * on a boolean value.
+ * 
+ * @param {boolean} show display the message if
+ * true, don't display it if false.
+ */
+function displayEmptyNoteSign(show) {
+    noResults.style.display = "none";
+    emptyNotes.style.display = show ? "flex" : "none";
+}
+
+/**
+ * Displays the empty no search results found
+ * message based on a boolean value.
+ * 
+ * @param {boolean} show display the message if
+ * true, don't display it if false.
+ */
+function displayNoResultsSign(show) {
+    emptyNotes.style.display = "none";
+    noResults.style.display = show ? "flex" : "none";
+}
 
 /* Show the add note popup */
 showFormButton.addEventListener("click", function() {
@@ -62,7 +92,15 @@ addFilterButton.addEventListener("submit", async function(event) {
     document.getElementById("showform").style.display = "none";
     document.getElementById("clear-filter").style.display = "inline-block";
 
+    const resultText = document.getElementById("results");
     const searchResults = await searchNotes(filterTerm);
+    const numResults = Object.keys(searchResults).length;
+    resultText.textContent = `Showing results for "${filterTerm}":`;
+    resultText.hidden = false;
+
+    if (numResults < 1) {
+        displayNoResultsSign(true);
+    }
     updateDashboard(searchResults);
 });
 
@@ -70,7 +108,18 @@ addFilterButton.addEventListener("submit", async function(event) {
 clearFilterButton.addEventListener("click", async function() {
     document.getElementById("showform").style.display = "inline-block";
     document.getElementById("clear-filter").style.display = "none";
+
+    const resultText = document.getElementById("results");
+    resultText.textContent = "";
+    resultText.hidden = true;
+    displayNoResultsSign(false);
+
     const serverData = await loadNotes();
+    const numNotes = Object.keys(serverData).length;
+
+    if (numNotes < 1) {
+        displayEmptyNoteSign(true);
+    }
     updateDashboard(serverData);
 });
 
@@ -84,6 +133,7 @@ document.getElementById("logout").addEventListener("click", function() {
 document.getElementById("add-note").addEventListener("submit", async function(event) {
     event.preventDefault();
 
+    displayEmptyNoteSign(false);
     const noteTitle = document.getElementById("title").value;
     const timeStamp = new Date();
     const noteId = crypto.randomUUID();
@@ -248,6 +298,8 @@ function createEntry(entryData) {
     deleteButton.addEventListener("click", function() {
         deleteNote(entryData.id);
         container.remove();
+        const showEmpty = !(!!document.querySelector(".entry"));
+        displayEmptyNoteSign(showEmpty);
     });
     const buttonContainer = document.createElement("div");
     buttonContainer.appendChild(editButton);

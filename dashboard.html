@@ -18,7 +18,10 @@
           <a href="/index.html" id="logout">Logout</a>
         </li>
        </ul>
-       <p>Welcome, <i id="greetUser"></i></p>
+       <div class="user">
+          <img src="/img/user-circle.svg" alt="" aria-hidden="true">
+          <p>Welcome, <i id="greetUser"></i></p>
+       </div>
     </nav>
     
     <article>
@@ -26,14 +29,17 @@
       <hr>
     
       <section id="note-controls" class="note-controls">
-        <form id="filter" class="filter" autocomplete="off">
-          <input type="text" id="filterBox" placeholder="Filter by tag..." required>
-          <input type="submit" value="Go">
-          <button type="button" id="clear-filter">Clear Filter</button>
-        </form>
+        <div>
+          <form id="filter" class="filter" autocomplete="off">
+            <input type="text" id="filterBox" placeholder="Filter by tag..." required>
+            <input type="submit" value="Go">
+            <button type="button" id="clear-filter">Clear Filter</button>
+          </form>
+        </div>
   
         <button id="showform">Add Note</button>
       </section>
+      <p class="results" id="results" hidden></p>
     
       <dialog id="popup">
         <h2>Create Note</h2>
@@ -44,6 +50,19 @@
           <button type="button" id="hideform">Cancel</button>
         </form>
       </dialog>
+
+      <section id="emptystate" class="emptystate">
+        <div id="no-notes" class="no-notes">
+          <img src="/img/plus-circle.svg" alt="" aria-hidden="true">
+          <h2>No Notes Yet</h2>
+          <p>To get started, add a note.</p>
+        </div>
+        <div id="no-results" class="no-results">
+          <img src="/img/eye-slash.svg" alt="" aria-hidden="true">
+          <h2>No results found</h2>
+          <p>Try a different search term.</p>
+        </div>
+      </section>
     
       <section id="notes" class="notes">
         <!-- Entries loaded with AJAX -->

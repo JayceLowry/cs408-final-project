@@ -21,6 +21,7 @@ main {
   padding: 0 20px;
   max-width: 980px;
   min-height: 100%;
+  border: 1px solid white;
 }
 
 body {
@@ -31,6 +32,7 @@ body {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  margin-top: 25px;
 }
 
 .entry {
@@ -100,7 +102,6 @@ nav {
   margin: 5px;
   font-weight: bold;
   border-radius: 10px;
-  position: sticky;
   top: 0;
   display: flex;
   justify-content: space-between;
@@ -132,7 +133,49 @@ nav li > a {
   text-decoration: none;
 }
 
+nav .user {
+  display: flex;
+  align-items: center;
+}
+
+nav .user img {
+  height: 2em;
+}
+
 .note-controls {
   display: flex;
   justify-content: space-between;
+}
+
+.emptystate {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.emptystate p,h2 {
+  margin: 0;
+  padding: 0;
+}
+
+.emptystate img {
+  height: 5em;
+}
+
+.no-notes {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  display: none;
+}
+
+.no-results {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  display: none;
 }

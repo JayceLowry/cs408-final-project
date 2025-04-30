@@ -44,7 +44,6 @@ nav {
   margin: 5px;
   font-weight: bold;
   border-radius: 10px;
-  position: sticky;
   top: 0;
   display: flex;
   justify-content: space-between;
@@ -55,7 +54,7 @@ nav ul {
   padding: 0;
   list-style: none;
   display: flex;
-  /* justify-content: space-between; */
+  justify-content: space-evenly;
   align-items: center;
 }
 
@@ -74,6 +73,15 @@ nav li {
 nav li > a {
   color: black;
   text-decoration: none;
+}
+
+nav .user {
+  display: flex;
+  align-items: center;
+}
+
+nav .user img {
+  height: 2em;
 }
 
 .sidebar {
@@ -108,7 +116,6 @@ nav li > a {
 
 .note-header {
   display: flex;
-  /* border: 1px solid red; */
   justify-content: space-between;
   align-items: center;
 }
