@@ -51,6 +51,7 @@ loginForm.addEventListener("submit", async function(event) {
         }
         console.log("Login successful:", data);
         sessionStorage.setItem("userId", data.userId);
+        sessionStorage.setItem("username", data.username);
         window.location.href = "/dashboard.html";
     } catch (error) {
       console.error(error);

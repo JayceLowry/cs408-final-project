@@ -18,6 +18,8 @@ async function loaded() {
     if (!editing) {
         window.location.href = "/dashboard.html";
     }
+    const greet = document.getElementById("greetUser");
+    greet.textContent = sessionStorage.getItem("username");
 
     const serverNoteData = await loadNotes();
     updateSidebar(serverNoteData);
@@ -131,7 +133,6 @@ async function loadNotes() {
         return data;
     } catch (error) {
         console.log(error);
-        alert("Failed to retrieve notes");
     }
 }
 
@@ -274,4 +275,12 @@ function updateCanvas() {
         tags.appendChild(noteTag);
     });
     editing.tags = [...editing.tags];
+
+    const displayDate = new Date(editing.timestamp);
+    const dateTag = document.getElementById("date");
+    dateTag.setAttribute("datetime", editing.timestamp);
+    dateTag.textContent = displayDate.toLocaleString(undefined, {
+        year: "numeric", month: "short", day: "numeric", 
+        hour: "numeric", minute: "2-digit"
+    });
 }

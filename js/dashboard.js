@@ -12,6 +12,8 @@ async function loaded() {
     if (!userId) {
         window.location.href = "/index.html";
     }
+    const greet = document.getElementById("greetUser");
+    greet.textContent = sessionStorage.getItem("username");
 
     const serverData = await loadNotes();
     updateDashboard(serverData);
@@ -83,7 +85,7 @@ document.getElementById("add-note").addEventListener("submit", async function(ev
     event.preventDefault();
 
     const noteTitle = document.getElementById("title").value;
-    const timeStamp = Date.now();
+    const timeStamp = new Date();
     const noteId = crypto.randomUUID();
     document.getElementById("title").value = "";
 
@@ -93,7 +95,7 @@ document.getElementById("add-note").addEventListener("submit", async function(ev
         "title": `${noteTitle}`,
         "content": "",
         "tags": [],
-        "timestamp": `${timeStamp}`
+        "timestamp": timeStamp
     }
 
     try {

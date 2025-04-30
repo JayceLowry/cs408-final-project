@@ -102,6 +102,13 @@ nav {
   border-radius: 10px;
   position: sticky;
   top: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+nav p {
+  margin: 5px;
+  padding: 5px;
 }
 
 nav ul {

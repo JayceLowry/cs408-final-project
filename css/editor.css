@@ -46,6 +46,8 @@ nav {
   border-radius: 10px;
   position: sticky;
   top: 0;
+  display: flex;
+  justify-content: space-between;
 }
 
 nav ul {
@@ -53,8 +55,13 @@ nav ul {
   padding: 0;
   list-style: none;
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
+}
+
+nav p {
+  margin: 5px;
+  padding: 5px;
 }
 
 nav li {
@@ -97,6 +104,21 @@ nav li > a {
   width: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.note-header {
+  display: flex;
+  /* border: 1px solid red; */
+  justify-content: space-between;
+  align-items: center;
+}
+
+.timestamp {
+  padding: 0;
+  margin: 0;
+  white-space: nowrap;
+  font-size: 10pt;
+  font-style: italic;
 }
 
 .editor {
@@ -159,10 +181,11 @@ h1 {
 .meta-container {
   display: flex;
   justify-content: space-between;
+  gap: 40px;
 }
 
 .meta-container * {
-  align-content: center;
+  align-content:flex-end;
 }
 
 .tag-container {

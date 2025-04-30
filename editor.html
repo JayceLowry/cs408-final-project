@@ -20,6 +20,7 @@
           <a href="/dashboard.html">Return to Dashboard</a>
         </li>
       </ul>
+      <p>Welcome, <i id="greetUser"></i></p>
     </nav>
     
     <article class="main">
@@ -28,7 +29,12 @@
         </aside>
 
       <section class="canvas" id="canvas">
-        <h1 id="note-title"></h1>
+        <header class="note-header">
+          <h1 id="note-title"></h1>
+          <form id="save">
+            <input type="submit" value="Save">
+          </form>
+        </header>
         <div class="meta-container">
           <div class="tag-container">
             <ul class="tags" id="tags">
@@ -43,9 +49,7 @@
               </span>
             </form>
           </div>
-          <form id="save">
-            <input type="submit" value="Save">
-          </form>
+          <p class="timestamp">Created <time id="date" datetime=""></time></p>
         </div>
         <hr>
         <textarea class="editor" id="editor" placeholder="Type your note here..."></textarea>
