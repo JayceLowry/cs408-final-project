@@ -10,7 +10,7 @@ async function loaded() {
     const userId = sessionStorage.getItem("userId");
 
     if (!userId) {
-        window.location.href = "/pages/login.html";
+        window.location.href = "/index.html";
     }
 
     const serverData = await loadNotes();
@@ -76,7 +76,6 @@ clearFilterButton.addEventListener("click", async function() {
 document.getElementById("logout").addEventListener("click", function() {
     sessionStorage.removeItem("userId");
     sessionStorage.removeItem("editing");
-    window.location.href = "/pages/login.html";
 });
 
 /* Handles adding a new note */
@@ -238,7 +237,7 @@ function createEntry(entryData) {
     editButton.id = "edit-note";
     editButton.addEventListener("click", function() {
         sessionStorage.setItem("editing", JSON.stringify(entryData));
-        window.location.href = "pages/editor.html";
+        window.location.href = "/editor.html";
     });
 
     const deleteButton = document.createElement("button");

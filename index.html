@@ -6,51 +6,21 @@
   <title>Hello World!</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="/css/login.css">
 </head>
 
 <body>
-  
   <main>
-    <nav>
-       <ul>
-        <li>
-          <a href="" id="logout">Logout</a>
-        </li>
-       </ul>
-    </nav>
-    
-    <article>
-      <h1>Dashboard</h1>
-      <hr>
-    
-      <section id="note-controls" class="note-controls">
-        <form id="filter" class="filter" autocomplete="off">
-          <input type="text" id="filterBox" placeholder="Filter by tag..." required>
-          <input type="submit" value="Go">
-          <button type="button" id="clear-filter">Clear Filter</button>
-        </form>
-  
-        <button id="showform">Add Note</button>
-      </section>
-    
-      <dialog id="popup">
-        <h2>Create Note</h2>
-        <form id="add-note">
-          <label for="title">Title:</label>
-          <input type="text" name="title" id="title" placeholder="Enter a title..." required>
-          <input type="submit" value="Create">
-          <button type="button" id="hideform">Cancel</button>
-        </form>
-      </dialog>
-    
-      <section id="notes" class="notes">
-        <!-- Entries loaded with AJAX -->
-      </section>
-    </article>
+    <form id="login-form">
+      <h1>Sign in</h1>
+      <p>or <a href="/signup.html">create an account</a></p>
+      <input type="text" id="username" placeholder="Username" required autocomplete="off">
+      <input type="text" id="password" placeholder="Password" required autocomplete="off">
+      <button type="submit">Sign in</button>
+    </form>
   </main>
-
-  <script type="module" src="js/main.js"></script>
+  
+  <script type="module" src="/js/login.js"></script>
 </body>
 
 </html>

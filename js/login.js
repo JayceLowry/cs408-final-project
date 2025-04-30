@@ -7,6 +7,10 @@ function loaded() {
     // Assign to a variable so we can set a breakpoint in the debugger!
     const hello = sayHello();
     console.log(hello);
+
+    if (sessionStorage.getItem("userId")) {
+        window.location.href = "/dashboard.html";
+    }
 }
 
 /**
@@ -47,7 +51,7 @@ loginForm.addEventListener("submit", async function(event) {
         }
         console.log("Login successful:", data);
         sessionStorage.setItem("userId", data.userId);
-        window.location.href = "/index.html";
+        window.location.href = "/dashboard.html";
     } catch (error) {
       console.error(error);
       alert("Something went wrong");

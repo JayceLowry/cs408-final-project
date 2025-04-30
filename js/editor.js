@@ -12,11 +12,11 @@ async function loaded() {
     const editing = sessionStorage.getItem("editing");
 
     if (!userId) {
-        window.location.href = "/pages/login.html";
+        window.location.href = "/index.html";
     }
 
     if (!editing) {
-        window.location.href = "/index.html";
+        window.location.href = "/dashboard.html";
     }
 
     const serverNoteData = await loadNotes();
@@ -105,7 +105,6 @@ function showInput(isShowing) {
 document.getElementById("logout").addEventListener("click", function() {
     sessionStorage.removeItem("userId");
     sessionStorage.removeItem("editing");
-    window.location.href = "/pages/login.html";
 });
 
 /**
