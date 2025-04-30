@@ -12,11 +12,15 @@
 <body>
   <main>
     <form id="signup-form">
-      <h1>Sign up</h1>
-      <p>or <a href="/index.html">login to an existing account</a></p>
-      <input type="text" id="username" placeholder="Username" required autocomplete="off">
-      <input type="text" id="password" placeholder="Password" required autocomplete="off">
-      <button type="submit">Sign Up</button>
+      <h1>Create your account</h1>
+      <label for="username">Username:</label>
+      <input type="text" id="username" placeholder="Username" required autocomplete="off" title="Enter your username">
+      <label for="password">Password:</label>
+      <input type="text" id="password" placeholder="Password" required autocomplete="off" title="Enter your password">
+      <button type="submit">Create Account</button>
+      <hr>
+      <p>or</p>
+      <a href="/index.html">Sign in with existing account</a>
     </form>
   </main>
   

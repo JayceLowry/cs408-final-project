@@ -22,6 +22,7 @@ main {
   max-width: 980px;
   min-height: 100%;
   border: 1px solid white;
+  border-radius: 5px;
 }
 
 body {

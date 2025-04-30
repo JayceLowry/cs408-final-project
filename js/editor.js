@@ -107,6 +107,7 @@ function showInput(isShowing) {
 document.getElementById("logout").addEventListener("click", function() {
     sessionStorage.removeItem("userId");
     sessionStorage.removeItem("editing");
+    sessionStorage.removeItem("username");
 });
 
 /**

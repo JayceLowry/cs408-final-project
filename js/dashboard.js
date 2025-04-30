@@ -127,6 +127,7 @@ clearFilterButton.addEventListener("click", async function() {
 document.getElementById("logout").addEventListener("click", function() {
     sessionStorage.removeItem("userId");
     sessionStorage.removeItem("editing");
+    sessionStorage.removeItem("username");
 });
 
 /* Handles adding a new note */
