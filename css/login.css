@@ -9,6 +9,11 @@ body, html {
 
 * {
   box-sizing: inherit;
+  color: #454545;
+}
+
+a {
+  color: blue;
 }
 
 main {
@@ -41,4 +46,37 @@ form p,a {
   text-align: center;
   padding: 0;
   margin: 0;
+}
+
+.error {
+  background-color: #fff0f3;
+  border-radius: 5px;
+  padding: 5px;
+  border-left: solid red;
+}
+
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-container input {
+  width: 100%;
+  padding-right: 2.5rem;
+  box-sizing: border-box;
+}
+
+.password-container button {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.eye-icon {
+  width: 2em;
 }

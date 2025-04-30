@@ -16,8 +16,12 @@
       <label for="username">Username:</label>
       <input type="text" id="username" name="username" placeholder="Username" required autocomplete="off" title="Enter your username">
       <label for="password">Password:</label>
-      <input type="text" id="password" name="password" placeholder="Password" required autocomplete="off" title="Enter your password">
+      <div class="password-container">
+        <input type="password" id="password" name="password" placeholder="Password" required autocomplete="off" title="Enter your password" aria-label="Show Password">
+        <button type="button" id="toggle-show" title="Show Password"><img src="/img/eye-slash.svg" id="eye" alt="" aria-hidden="true" class="eye-icon"></button>
+      </div>
       <button type="submit">Login</button>
+      <p id="login-error" role="alert" class="error" hidden>Invalid credentials, please try again.</p>
       <hr>
       <p>or</p>
       <a href="/signup.html">Create an account</a>
