@@ -25,15 +25,20 @@ main {
   border-radius: 5px;
 }
 
+h1 {
+  font-size: 32pt;
+  margin: 15px 0px 15px 0px;
+  padding: 0;
+}
+
 body {
   padding: 5px;
 }
 
 .notes {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  padding-top: 1rem;
 }
 
 .entry {
@@ -46,8 +51,7 @@ body {
   flex-basis: 15%;
   flex-direction: column;
   overflow: hidden;
-  max-height: 100%;
-  justify-content:space-between;
+  justify-content: space-between;
   gap: 5px;
 }
 
@@ -72,7 +76,18 @@ body {
   flex: 1;
 }
 
-#popup, #clear-filter {
+#popup {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 30px;
+  border-radius: 5px;
+  background-color:#fdfcfc;
+  align-items: center;
+  height: 20vh;
+}
+
+#clear-filter {
   display: none;
 }
 
@@ -163,6 +178,10 @@ nav .user img {
 
 .emptystate img {
   height: 5em;
+}
+
+.results {
+  margin-bottom: 0;
 }
 
 .no-notes {
