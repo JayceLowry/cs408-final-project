@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Hello World!</title>
+  <title>Notebase - Signup</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/css/login.css">
@@ -12,12 +12,13 @@
 <body>
   <main>
     <form id="signup-form">
-      <h1>Create your account</h1>
+      <h1>Notebase</h1>
+      <h2>Create your account</h2>
       <label for="username">Username:</label>
-      <input type="text" id="username" placeholder="Username" required autocomplete="off" title="Enter your username">
+      <input type="text" id="username" placeholder="Enter a username" required autocomplete="off" title="Enter your username" maxlength="21" minlength="3">
       <label for="password">Password:</label>
       <div class="password-container">
-        <input type="password" id="password" placeholder="Password" required autocomplete="off" title="Enter your password" aria-label="Show Password">
+        <input type="password" id="password" placeholder="Enter a password" required autocomplete="off" title="Enter your password" aria-label="Show Password">
         <button type="button" id="toggle-show" title="Show Password"><img src="/img/eye-slash.svg" alt="" aria-hidden="true" id="eye" class="eye-icon"></button>
       </div>
       <button type="submit">Create Account</button>

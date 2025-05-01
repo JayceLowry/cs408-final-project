@@ -1,12 +1,11 @@
+import { truncateString } from "./utils.js";
+
 window.onload = loaded;
 
 /**
- * Simple Function that will be run when the browser is finished loading.
+ * Runs when the browser is finished loading.
  */
 async function loaded() {
-    // Assign to a variable so we can set a breakpoint in the debugger!
-    const hello = sayHello();
-    console.log(hello);
     const userId = sessionStorage.getItem("userId");
 
     if (!userId) {
@@ -21,14 +20,6 @@ async function loaded() {
         displayEmptyNoteSign(true);
     }
     updateDashboard(serverData);
-}
-
-/**
- * This function returns the string 'hello'
- * @return {string} the string hello
- */
-export function sayHello() {
-    return 'hello';
 }
 
 const showFormButton = document.getElementById("showform");
@@ -65,7 +56,7 @@ function displayNoResultsSign(show) {
 
 /* Show the add note popup */
 showFormButton.addEventListener("click", function() {
-    addNotePopup.style.display = "block";
+    addNotePopup.style.display = "flex";
     document.getElementById("title").focus();
 });
 
@@ -273,7 +264,7 @@ function createEntry(entryData) {
     
     const content = document.createElement("p");
     const displayLength = 50;
-    content.textContent = (entryData.content.length > displayLength) ? entryData.content.slice(0, displayLength) + "..." : entryData.content;
+    content.textContent = truncateString(entryData.content, displayLength);
 
     /* Add the note's tags */
     const tags = document.createElement("ul");

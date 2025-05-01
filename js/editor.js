@@ -1,13 +1,11 @@
+import { truncateString } from "./utils.js";
+
 window.onload = loaded;
 
 /**
- * Simple Function that will be run when the browser is finished loading.
+ * Runs when the browser is finished loading.
  */
 async function loaded() {
-    // Assign to a variable so we can set a breakpoint in the debugger!
-    const hello = sayHello();
-    console.log(hello);
-
     const userId = sessionStorage.getItem("userId");
     const editing = sessionStorage.getItem("editing");
 
@@ -24,14 +22,6 @@ async function loaded() {
     const serverNoteData = await loadNotes();
     updateSidebar(serverNoteData);
     updateCanvas();
-}
-
-/**
- * This function returns the string 'hello'
- * @return {string} the string hello
- */
-export function sayHello() {
-    return 'loaded editor';
 }
 
 const saveNoteButton = document.getElementById("save");
@@ -216,7 +206,7 @@ function createEntry(entryData) {
     
     /* Create the button element for editing */
     const editButton = document.createElement("button");
-    editButton.textContent = entryData.title;
+    editButton.textContent = truncateString(entryData.title, 8);
     editButton.id = "edit-note";
     editButton.classList.add("edit-note");
 

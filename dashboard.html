@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Hello World!</title>
+  <title>Notebase - Dashboard</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/css/dashboard.css">
@@ -31,7 +31,7 @@
       <section id="note-controls" class="note-controls">
         <div>
           <form id="filter" class="filter" autocomplete="off">
-            <input type="text" id="filterBox" placeholder="Filter by tag..." required>
+            <input type="text" id="filterBox" placeholder="Filter by tag..." required maxlength="20">
             <input type="submit" value="Go">
             <button type="button" id="clear-filter">Clear Filter</button>
           </form>
@@ -45,7 +45,7 @@
         <h2>Create Your Note</h2>
         <form id="add-note">
           <label for="title">Title:</label>
-          <input type="text" name="title" id="title" placeholder="Enter a title..." required>
+          <input type="text" name="title" id="title" placeholder="Enter a title..." required maxlength="40">
           <input type="submit" value="Create">
           <button type="button" id="hideform">Cancel</button>
         </form>
