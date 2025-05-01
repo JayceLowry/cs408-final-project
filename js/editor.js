@@ -1,4 +1,4 @@
-import { truncateString } from "./utils.js";
+import { truncateString, retrieveNotes, retrieveNote, saveNote } from "./utils.js";
 
 window.onload = loaded;
 
@@ -19,7 +19,7 @@ async function loaded() {
     const greet = document.getElementById("greetUser");
     greet.textContent = sessionStorage.getItem("username");
 
-    const serverNoteData = await loadNotes();
+    const serverNoteData = await retrieveNotes(userId);
     updateSidebar(serverNoteData);
     updateCanvas();
 }
@@ -101,77 +101,6 @@ document.getElementById("logout").addEventListener("click", function() {
 });
 
 /**
- * Retrieves note data from the server.
- * 
- * @returns {JSON} note data for all notes.
- */
-async function loadNotes() {
-    const userId = sessionStorage.getItem("userId");
-
-    try {
-        const response = await fetch(`https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items?userId=${userId}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            },
-        })
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error("Error retrieving notes from the server", data.message);
-        }
-        return data;
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-/**
- * Retrieves a specific note.
- * 
- * @param {String} id the id for the note to retrieve.
- */
-async function retrieveNote(id) {
-    const userId = sessionStorage.getItem("userId");
-    try {
-        const response = await fetch(`https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items/${id}?userId=${userId}`, {
-            Method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            },
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error("Error retrieving this note", data.message);
-        }
-        return data;
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-/**
- * Saves the contents of a given note to the server.
- */
-function saveNote(noteData) {
-    try {
-        fetch("https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items", {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(noteData)
-        });
-    } catch (error) {
-        console.error(error);
-        alert("Something went wrong");
-    }
-}
-
-/**
  * Updates the sidebar with notes.
  * 
  * @param {JSON} data the data for one or more notes.
@@ -212,7 +141,7 @@ function createEntry(entryData) {
 
     editButton.addEventListener("click", async function() {
         /* Get updated note data from the server */
-        const thisNote = await retrieveNote(entryData.id);
+        const thisNote = await retrieveNote(sessionStorage.getItem("userId"), entryData.id);
 
         /* Set this note as active */
         sessionStorage.setItem("editing", JSON.stringify(thisNote));

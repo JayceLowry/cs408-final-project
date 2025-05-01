@@ -1,4 +1,4 @@
-import { truncateString } from "./utils.js";
+import { truncateString, retrieveNotes, searchNotes, deleteNote, saveNote } from "./utils.js";
 
 window.onload = loaded;
 
@@ -14,7 +14,7 @@ async function loaded() {
     const greet = document.getElementById("greetUser");
     greet.textContent = sessionStorage.getItem("username");
 
-    const serverData = await loadNotes();
+    const serverData = await retrieveNotes(userId);
     const numNotes = Object.keys(serverData).length;
     if (numNotes < 1) {
         displayEmptyNoteSign(true);
@@ -84,7 +84,7 @@ addFilterButton.addEventListener("submit", async function(event) {
     document.getElementById("clear-filter").style.display = "inline-block";
 
     const resultText = document.getElementById("results");
-    const searchResults = await searchNotes(filterTerm);
+    const searchResults = await searchNotes(sessionStorage.getItem("userId"), filterTerm);
     const numResults = Object.keys(searchResults).length;
     resultText.textContent = `Showing results for "${filterTerm}":`;
     resultText.hidden = false;
@@ -105,7 +105,7 @@ clearFilterButton.addEventListener("click", async function() {
     resultText.hidden = true;
     displayNoResultsSign(false);
 
-    const serverData = await loadNotes();
+    const serverData = await retrieveNotes(sessionStorage.getItem("userId"));
     const numNotes = Object.keys(serverData).length;
 
     if (numNotes < 1) {
@@ -140,100 +140,11 @@ document.getElementById("add-note").addEventListener("submit", async function(ev
         "timestamp": timeStamp
     }
 
-    try {
-        fetch("https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items", {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(dataOut)
-        });
-    } catch (error) {
-        console.error(error);
-        alert("Something went wrong");
-    }
+    saveNote(dataOut);
 
     addNotePopup.style.display = "none";
     document.getElementById("notes").appendChild(createEntry(dataOut));
 });
-
-/**
- * Retrieves notes from the server.
- * 
- * @returns {JSON} note data.
- */
-async function loadNotes() {
-    const userId = sessionStorage.getItem("userId");
-    try {
-        const response = await fetch(`https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items?userId=${userId}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            },
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            alert("Failed to load notes");
-            throw new Error("Load failure");
-        }
-        return data;
-
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-/**
- * Retrieves notes from the server whose
- * tags match a given search filter term.
- * 
- * @param {String} filter the filter/search term.
- * @returns {JSON} note data.
- */
-async function searchNotes(filter) {
-    const userId = sessionStorage.getItem("userId");
-    try {
-        const response = await fetch(`https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items/search/${filter}?userId=${userId}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            },
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            alert("Failed to load notes");
-            throw new Error("Load failure");
-        }
-        return data;
-
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-/**
- * Deletes a note from the server with a given id.
- * 
- * @param {String} id the id for the note
- * to delete.
- */
-async function deleteNote(id) {
-    const userId = sessionStorage.getItem("userId");
-    try {
-        fetch(`https://w450sz6yzd.execute-api.us-east-2.amazonaws.com/items/${id}?userId=${userId}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json"
-            },
-        });
-    } catch (error) {
-        console.error(error);
-    }
-}
 
 /**
  * Updates the dashboard with note data.
@@ -288,7 +199,7 @@ function createEntry(entryData) {
     deleteButton.textContent = "Delete";
     deleteButton.id = "delete-note";
     deleteButton.addEventListener("click", function() {
-        deleteNote(entryData.id);
+        deleteNote(sessionStorage.getItem("userId"), entryData.id);
         container.remove();
         const showEmpty = !(!!document.querySelector(".entry"));
         displayEmptyNoteSign(showEmpty);
