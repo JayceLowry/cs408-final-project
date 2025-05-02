@@ -35,7 +35,7 @@ saveNoteButton.addEventListener("submit", function(event){
     event.preventDefault();
 
     const editing = JSON.parse(sessionStorage.getItem("editing"));
-    const newContent = document.getElementById("editor").value;
+    const newContent = document.getElementById("editor").value.trim();
 
     editing.content = newContent;
     saveNote(editing);
@@ -47,7 +47,7 @@ createTagButton.addEventListener("submit", async function(event){
     event.preventDefault();
 
     const textInput = document.getElementById("taginput");
-    const text = textInput.value;
+    const text = textInput.value.trim();
     const editor = document.getElementById("editor");
     const editorText = editor.value;
 

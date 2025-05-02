@@ -13,6 +13,7 @@ const loginForm = document.getElementById("login-form");
 const togglePasswordButton = document.getElementById("toggle-show");
 const passwordField = document.getElementById("password");
 
+/* Handles logging in the user */
 loginForm.addEventListener("submit", async function(event) {
     event.preventDefault();
 
@@ -49,6 +50,7 @@ loginForm.addEventListener("submit", async function(event) {
     }
 });
 
+/* Handles showing/hiding the password field */
 togglePasswordButton.addEventListener("click", function() {
     const isHidden = passwordField.type === "password";
     const eyeIcon = document.getElementById("eye");

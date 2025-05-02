@@ -35,6 +35,7 @@ body {
   padding: 5px;
 }
 
+/* Main notes section */
 .notes {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
@@ -76,20 +77,6 @@ body {
   flex: 1;
 }
 
-#popup {
-  display: none;
-  flex-direction: column;
-  justify-content: space-around;
-  gap: 30px;
-  border-radius: 5px;
-  background-color:#fdfcfc;
-  align-items: center;
-}
-
-#clear-filter {
-  display: none;
-}
-
 .tags {
   list-style: none;
   display: flex;
@@ -111,6 +98,7 @@ body {
   white-space: nowrap;
 }
 
+/* Navigation menu */
 nav {
   background-color: silver;
   padding: 0.1%;
@@ -157,6 +145,21 @@ nav .user img {
   height: 2em;
 }
 
+/* Forms & UI */
+#popup {
+  display: none; /* Dynamically set to flex */
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 30px;
+  border-radius: 5px;
+  background-color:#fdfcfc;
+  align-items: center;
+}
+
+#clear-filter {
+  display: none;
+}
+
 .note-controls {
   display: flex;
   justify-content: space-between;
@@ -183,18 +186,9 @@ nav .user img {
   margin-bottom: 0;
 }
 
-.no-notes {
+.no-notes, .no-results {
   text-align: center;
-  display: flex;
   flex-direction: column;
   gap: 15px;
-  display: none;
-}
-
-.no-results {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  display: none;
+  display: none; /* Dynamically set to flex */
 }

@@ -77,7 +77,7 @@ addFilterButton.addEventListener("submit", async function(event) {
     event.preventDefault();
 
     const textBox = document.getElementById("filterBox");
-    const filterTerm = textBox.value;
+    const filterTerm = textBox.value.trim();
     textBox.value = "";
 
     document.getElementById("showform").style.display = "none";
@@ -126,7 +126,7 @@ document.getElementById("add-note").addEventListener("submit", async function(ev
     event.preventDefault();
 
     displayEmptyNoteSign(false);
-    const noteTitle = document.getElementById("title").value;
+    const noteTitle = document.getElementById("title").value.trim();
     const timeStamp = new Date();
     const noteId = crypto.randomUUID();
     document.getElementById("title").value = "";
