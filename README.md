@@ -1,5 +1,14 @@
 # CS408 Final Project
 
+## Running
+To run the project locally, install the Live Server extension for VScode. In the
+command palette, select `Live Preview: Start Server`. Then, connect to
+http://127.0.0.1:3000/ to view the running application.
+
+## Testing
+Tests can be viewed by first running the project locally, then navigating to
+http://127.0.0.1:3000/test/test.html.
+
 ## Project Spec
 
 For my final project, my plan is to create a note-taking application.
@@ -39,3 +48,12 @@ Finally, I would like to add a note-sharing feature, allowing users to share ind
 
 ![Notes Editor Page](editor.png)
 
+## Sources
+
+- https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/client/dynamodb/command/ScanCommand/
+- https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GSI.html
+- https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/client/dynamodb/command/QueryCommand/
+- https://docs.aws.amazon.com/lambda/latest/dg/chapter-layers.html
+- https://docs.aws.amazon.com/lambda/latest/dg/adding-layers.html
+- https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage
+- https://www.svgrepo.com/collection/zwicon-line-icons/
